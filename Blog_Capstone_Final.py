@@ -12,14 +12,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm
 import os
 import smtplib
-from dotenv import load_dotenv
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = os.getenv("FLASK_KEY")
+app.config["SECRET_KEY"] = os.environ.get("FLASK_KEY")
 ckeditor = CKEditor(app)
 Bootstrap5(app)
-
-load_dotenv()
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -33,7 +30,7 @@ gravatar = Gravatar(app, size=100, rating="g", default="retro", force_default=Fa
 class Base(DeclarativeBase):
     pass
 
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DB_URI") ,"sqlite:///posts.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DB_URI") ,"sqlite:///posts.db"
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
@@ -203,8 +200,8 @@ def delete_post(post_id):
 def about():
     return render_template("about.html", current_user=current_user)
 
-MAIL_ADDRESS = os.getenv("EMAIL_KEY")
-MAIL_APP_PW = os.getenv("PASSWORD_KEY")
+MAIL_ADDRESS = os.environ.get("EMAIL_KEY")
+MAIL_APP_PW = os.environ.get("PASSWORD_KEY")
 
 print(MAIL_ADDRESS, MAIL_APP_PW)
 
